@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"sync"
 
 	"code.gitea.io/gitea/models/db"
 	packages_model "code.gitea.io/gitea/models/packages"
@@ -23,8 +22,6 @@ import (
 	packages_service "code.gitea.io/gitea/services/packages"
 )
 
-var uploadVersionMutex sync.Mutex
-
 // saveAsPackageBlob creates a package blob from an upload
 // The uploaded blob gets stored in a special upload version to link them to the package/image
 func saveAsPackageBlob(hsr packages_module.HashedSizeReader, pi *packages_service.PackageInfo) (*packages_model.PackageBlob, error) {
@@ -34,9 +31,6 @@ func saveAsPackageBlob(hsr packages_module.HashedSizeReader, pi *packages_servic
 
 	contentStore := packages_module.NewContentStore()
 
-	var uploadVersion *packages_model.PackageVersion
-
-	uploadVersionMutex.Lock()
 	err := db.WithTx(db.DefaultContext, func(ctx context.Context) error {
 		created := true
 		p := &packages_model.Package{
@@ -77,16 +71,6 @@ func saveAsPackageBlob(hsr packages_module.HashedSizeReader, pi *packages_servic
 			}
 		}
 
-		uploadVersion = pv
-
-		return nil
-	})
-	uploadVersionMutex.Unlock()
-	if err != nil {
-		return nil, err
-	}
-
-	err = db.WithTx(db.DefaultContext, func(ctx context.Context) error {
 		pb, exists, err = packages_model.GetOrInsertBlob(ctx, pb)
 		if err != nil {
 			log.Error("Error inserting package blob: %v", err)
@@ -111,7 +95,7 @@ func saveAsPackageBlob(hsr packages_module.HashedSizeReader, pi *packages_servic
 		filename := strings.ToLower(fmt.Sprintf("sha256_%s", pb.HashSHA256))
 
 		pf := &packages_model.PackageFile{
-			VersionID:    uploadVersion.ID,
+			VersionID:    pv.ID,
 			BlobID:       pb.ID,
 			Name:         filename,
 			LowerName:    filename,

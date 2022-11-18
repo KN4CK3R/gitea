@@ -122,21 +122,30 @@ type Package struct {
 func TryInsertPackage(ctx context.Context, p *Package) (*Package, error) {
 	e := db.GetEngine(ctx)
 
-	key := &Package{
+	pkg := &Package{
 		OwnerID:   p.OwnerID,
 		Type:      p.Type,
 		LowerName: p.LowerName,
 	}
 
-	has, err := e.Get(key)
+	has, err := e.Get(pkg)
 	if err != nil {
 		return nil, err
 	}
 	if has {
-		return key, ErrDuplicatePackage
+		return pkg, ErrDuplicatePackage
 	}
-	if _, err = e.Insert(p); err != nil {
-		return nil, err
+	if _, errIns := e.Insert(p); errIns != nil {
+		// there could be concurrent inserts, if the package record already exists, try to query it again
+		has, err = e.Get(pkg)
+		if err != nil {
+			return nil, err
+		}
+		if has {
+			return pkg, ErrDuplicatePackage
+		}
+		// if there is still no package record, return the original insert error
+		return nil, errIns
 	}
 	return p, nil
 }

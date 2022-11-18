@@ -42,8 +42,15 @@ func GetOrInsertBlob(ctx context.Context, pb *PackageBlob) (*PackageBlob, bool, 
 	if has {
 		return pb, true, nil
 	}
-	if _, err = e.Insert(pb); err != nil {
-		return nil, false, err
+	if _, errIns := e.Insert(pb); errIns != nil {
+		has, err = e.Get(pb)
+		if err != nil {
+			return nil, false, err
+		}
+		if has {
+			return pb, true, nil
+		}
+		return nil, false, errIns
 	}
 	return pb, false, nil
 }

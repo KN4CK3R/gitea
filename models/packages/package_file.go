@@ -47,21 +47,28 @@ type PackageFile struct {
 func TryInsertFile(ctx context.Context, pf *PackageFile) (*PackageFile, error) {
 	e := db.GetEngine(ctx)
 
-	key := &PackageFile{
+	pkgFile := &PackageFile{
 		VersionID:    pf.VersionID,
 		LowerName:    pf.LowerName,
 		CompositeKey: pf.CompositeKey,
 	}
 
-	has, err := e.Get(key)
+	has, err := e.Get(pkgFile)
 	if err != nil {
 		return nil, err
 	}
 	if has {
-		return pf, ErrDuplicatePackageFile
+		return pkgFile, ErrDuplicatePackageFile
 	}
-	if _, err = e.Insert(pf); err != nil {
-		return nil, err
+	if _, errIns := e.Insert(pf); errIns != nil {
+		has, err = e.Get(pkgFile)
+		if err != nil {
+			return nil, err
+		}
+		if has {
+			return pkgFile, ErrDuplicatePackageFile
+		}
+		return nil, errIns
 	}
 	return pf, nil
 }

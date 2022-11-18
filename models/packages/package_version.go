@@ -41,20 +41,27 @@ type PackageVersion struct {
 func GetOrInsertVersion(ctx context.Context, pv *PackageVersion) (*PackageVersion, error) {
 	e := db.GetEngine(ctx)
 
-	key := &PackageVersion{
+	pkgVer := &PackageVersion{
 		PackageID:    pv.PackageID,
 		LowerVersion: pv.LowerVersion,
 	}
 
-	has, err := e.Get(key)
+	has, err := e.Get(pkgVer)
 	if err != nil {
 		return nil, err
 	}
 	if has {
-		return key, ErrDuplicatePackageVersion
+		return pkgVer, ErrDuplicatePackageVersion
 	}
-	if _, err = e.Insert(pv); err != nil {
-		return nil, err
+	if _, errIns := e.Insert(pv); errIns != nil {
+		has, err = e.Get(pkgVer)
+		if err != nil {
+			return nil, err
+		}
+		if has {
+			return pkgVer, ErrDuplicatePackageVersion
+		}
+		return nil, errIns
 	}
 	return pv, nil
 }
