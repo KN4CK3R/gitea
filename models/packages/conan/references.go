@@ -18,8 +18,8 @@ import (
 )
 
 var (
-	ErrRecipeReferenceNotExist  = util.NewNotExistErrorf("Recipe reference does not exist")
-	ErrPackageReferenceNotExist = util.NewNotExistErrorf("Package reference does not exist")
+	ErrRecipeReferenceNotExist  = util.NewNotExistErrorf("recipe reference does not exist")
+	ErrPackageReferenceNotExist = util.NewNotExistErrorf("package reference does not exist")
 )
 
 // RecipeExists checks if a recipe exists

@@ -23,15 +23,15 @@ import (
 
 var (
 	// ErrInvalidPackage indicates an invalid package
-	ErrInvalidPackage = util.NewInvalidArgumentErrorf("The package is invalid")
+	ErrInvalidPackage = util.NewInvalidArgumentErrorf("package is invalid")
 	// ErrInvalidPackageName indicates an invalid name
-	ErrInvalidPackageName = util.NewInvalidArgumentErrorf("The package name is invalid")
+	ErrInvalidPackageName = util.NewInvalidArgumentErrorf("package name is invalid")
 	// ErrInvalidPackageVersion indicates an invalid version
-	ErrInvalidPackageVersion = util.NewInvalidArgumentErrorf("The package version is invalid")
+	ErrInvalidPackageVersion = util.NewInvalidArgumentErrorf("package version is invalid")
 	// ErrInvalidAttachment indicates a invalid attachment
-	ErrInvalidAttachment = util.NewInvalidArgumentErrorf("The package attachment is invalid")
+	ErrInvalidAttachment = util.NewInvalidArgumentErrorf("package attachment is invalid")
 	// ErrInvalidIntegrity indicates an integrity validation error
-	ErrInvalidIntegrity = util.NewInvalidArgumentErrorf("Failed to validate integrity")
+	ErrInvalidIntegrity = util.NewInvalidArgumentErrorf("failed to validate integrity")
 )
 
 var nameMatch = regexp.MustCompile(`\A((@[^\s\/~'!\(\)\*]+?)[\/])?([^_.][^\s\/~'!\(\)\*]+)\z`)

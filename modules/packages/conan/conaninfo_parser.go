@@ -80,7 +80,7 @@ func readSections(r io.Reader) (map[string][]string, error) {
 			continue
 		}
 		if line != "" {
-			return nil, util.NewInvalidArgumentErrorf("Invalid conaninfo.txt")
+			return nil, util.NewInvalidArgumentErrorf("invalid conaninfo.txt")
 		}
 	}
 	if err := scanner.Err(); err != nil {

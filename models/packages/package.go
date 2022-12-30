@@ -20,9 +20,9 @@ func init() {
 
 var (
 	// ErrDuplicatePackage indicates a duplicated package error
-	ErrDuplicatePackage = util.NewAlreadyExistErrorf("Package already exists")
+	ErrDuplicatePackage = util.NewAlreadyExistErrorf("package already exists")
 	// ErrPackageNotExist indicates a package not exist error
-	ErrPackageNotExist = util.NewNotExistErrorf("Package does not exist")
+	ErrPackageNotExist = util.NewNotExistErrorf("package does not exist")
 )
 
 // Type of a package

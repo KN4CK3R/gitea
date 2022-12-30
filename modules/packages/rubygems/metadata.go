@@ -18,11 +18,11 @@ import (
 
 var (
 	// ErrMissingMetadataFile indicates a missing metadata.gz file
-	ErrMissingMetadataFile = util.NewInvalidArgumentErrorf("Metadata file is missing")
+	ErrMissingMetadataFile = util.NewInvalidArgumentErrorf("metadata.gz file is missing")
 	// ErrInvalidName indicates an invalid id in the metadata.gz file
-	ErrInvalidName = util.NewInvalidArgumentErrorf("Metadata file contains an invalid name")
+	ErrInvalidName = util.NewInvalidArgumentErrorf("package name is invalid")
 	// ErrInvalidVersion indicates an invalid version in the metadata.gz file
-	ErrInvalidVersion = util.NewInvalidArgumentErrorf("Metadata file contains an invalid version")
+	ErrInvalidVersion = util.NewInvalidArgumentErrorf("package version is invalid")
 )
 
 var versionMatcher = regexp.MustCompile(`\A[0-9]+(?:\.[0-9a-zA-Z]+)*(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?\z`)

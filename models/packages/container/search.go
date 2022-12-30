@@ -17,7 +17,7 @@ import (
 	"xorm.io/builder"
 )
 
-var ErrContainerBlobNotExist = util.NewNotExistErrorf("Container blob does not exist")
+var ErrContainerBlobNotExist = util.NewNotExistErrorf("container blob does not exist")
 
 type BlobSearchOptions struct {
 	OwnerID    int64

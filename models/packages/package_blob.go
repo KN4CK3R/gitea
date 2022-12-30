@@ -13,7 +13,7 @@ import (
 )
 
 // ErrPackageBlobNotExist indicates a package blob not exist error
-var ErrPackageBlobNotExist = util.NewNotExistErrorf("Package blob does not exist")
+var ErrPackageBlobNotExist = util.NewNotExistErrorf("package blob does not exist")
 
 func init() {
 	db.RegisterModel(new(PackageBlob))

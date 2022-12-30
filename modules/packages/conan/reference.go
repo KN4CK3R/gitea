@@ -25,7 +25,7 @@ var (
 	namePattern     = regexp.MustCompile(fmt.Sprintf(`^[a-zA-Z0-9_][a-zA-Z0-9_\+\.-]{%d,%d}$`, minChars-1, maxChars-1))
 	revisionPattern = regexp.MustCompile(fmt.Sprintf(`^[a-zA-Z0-9]{1,%d}$`, maxChars))
 
-	ErrValidation = util.NewInvalidArgumentErrorf("Could not validate one or more reference fields")
+	ErrValidation = util.NewInvalidArgumentErrorf("could not validate one or more reference fields")
 )
 
 // RecipeReference represents a recipe <Name>/<Version>@<User>/<Channel>#<Revision>

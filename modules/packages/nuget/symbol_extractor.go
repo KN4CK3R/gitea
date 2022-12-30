@@ -18,10 +18,10 @@ import (
 )
 
 var (
-	ErrMissingPdbFiles       = util.NewInvalidArgumentErrorf("Package does not contain PDB files")
-	ErrInvalidFiles          = util.NewInvalidArgumentErrorf("Package contains invalid files")
-	ErrInvalidPdbMagicNumber = util.NewInvalidArgumentErrorf("Invalid Portable PDB magic number")
-	ErrMissingPdbStream      = util.NewInvalidArgumentErrorf("Missing PDB stream")
+	ErrMissingPdbFiles       = util.NewInvalidArgumentErrorf("package does not contain PDB files")
+	ErrInvalidFiles          = util.NewInvalidArgumentErrorf("package contains invalid files")
+	ErrInvalidPdbMagicNumber = util.NewInvalidArgumentErrorf("invalid Portable PDB magic number")
+	ErrMissingPdbStream      = util.NewInvalidArgumentErrorf("missing PDB stream")
 )
 
 type PortablePdb struct {

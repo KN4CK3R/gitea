@@ -15,7 +15,7 @@ import (
 	"xorm.io/builder"
 )
 
-var ErrPackageCleanupRuleNotExist = util.NewNotExistErrorf("Package blob does not exist")
+var ErrPackageCleanupRuleNotExist = util.NewNotExistErrorf("package blob does not exist")
 
 func init() {
 	db.RegisterModel(new(PackageCleanupRule))
