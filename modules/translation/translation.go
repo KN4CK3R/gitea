@@ -31,6 +31,7 @@ type Locale interface {
 	TrString(string, ...any) string
 
 	Tr(key string, args ...any) template.HTML
+	TrExpand(key string, args []any) template.HTML
 	TrN(cnt any, key1, keyN string, args ...any) template.HTML
 
 	PrettyNumber(v any) string
@@ -224,6 +225,10 @@ var trNLangRules = map[string]func(int64) int{
 
 func (l *locale) Tr(s string, args ...any) template.HTML {
 	return l.TrHTML(s, args...)
+}
+
+func (l *locale) TrExpand(s string, args []any) template.HTML {
+	return l.Tr(s, args...)
 }
 
 // TrN returns translated message for plural text translation

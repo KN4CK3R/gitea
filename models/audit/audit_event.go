@@ -17,16 +17,16 @@ func init() {
 }
 
 type Event struct {
-	ID            int64      `xorm:"pk autoincr"`
-	Action        Action     `xorm:"INDEX NOT NULL"`
-	ActorID       int64      `xorm:"INDEX NOT NULL"`
-	ScopeType     ObjectType `xorm:"INDEX(scope) NOT NULL"`
-	ScopeID       int64      `xorm:"INDEX(scope) NOT NULL"`
-	TargetType    ObjectType `xorm:"NOT NULL"`
-	TargetID      int64      `xorm:"NOT NULL"`
-	Message       string
-	IPAddress     string
-	TimestampUnix timeutil.TimeStamp `xorm:"INDEX NOT NULL"`
+	ID             int64      `xorm:"pk autoincr"`
+	Action         Action     `xorm:"INDEX NOT NULL"`
+	ActorID        int64      `xorm:"INDEX NOT NULL"`
+	ScopeType      ObjectType `xorm:"INDEX(scope) NOT NULL"`
+	ScopeID        int64      `xorm:"INDEX(scope) NOT NULL"`
+	TargetType     ObjectType `xorm:"NOT NULL"`
+	TargetID       int64      `xorm:"NOT NULL"`
+	MessageContext []any      `xorm:"JSON TEXT"`
+	IPAddress      string
+	TimestampUnix  timeutil.TimeStamp `xorm:"INDEX NOT NULL"`
 }
 
 func (*Event) TableName() string {

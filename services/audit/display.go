@@ -53,11 +53,14 @@ func fromDatabaseEvents(ctx context.Context, evs []*audit_model.Event) []*Event 
 
 func fromDatabaseEvent(ctx context.Context, e *audit_model.Event, c cache) *Event {
 	return &Event{
-		Action:    e.Action,
-		Actor:     resolveType(ctx, audit_model.TypeUser, e.ActorID, c),
-		Scope:     resolveType(ctx, e.ScopeType, e.ScopeID, c),
-		Target:    resolveType(ctx, e.TargetType, e.TargetID, c),
-		Message:   e.Message,
+		Action: e.Action,
+		Actor:  resolveType(ctx, audit_model.TypeUser, e.ActorID, c),
+		Scope:  resolveType(ctx, e.ScopeType, e.ScopeID, c),
+		Target: resolveType(ctx, e.TargetType, e.TargetID, c),
+		MessageContext: MessageContext{
+			e.Action,
+			e.MessageContext,
+		},
 		Time:      e.TimestampUnix.AsTime(),
 		IPAddress: e.IPAddress,
 	}

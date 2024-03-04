@@ -12,15 +12,15 @@ import (
 
 func writeToDatabase(ctx context.Context, e *Event) error {
 	_, err := audit_model.InsertEvent(ctx, &audit_model.Event{
-		Action:        e.Action,
-		ActorID:       e.Actor.ID,
-		ScopeType:     e.Scope.Type,
-		ScopeID:       e.Scope.ID,
-		TargetType:    e.Target.Type,
-		TargetID:      e.Target.ID,
-		Message:       e.Message,
-		IPAddress:     e.IPAddress,
-		TimestampUnix: timeutil.TimeStamp(e.Time.Unix()),
+		Action:         e.Action,
+		ActorID:        e.Actor.ID,
+		ScopeType:      e.Scope.Type,
+		ScopeID:        e.Scope.ID,
+		TargetType:     e.Target.Type,
+		TargetID:       e.Target.ID,
+		MessageContext: e.MessageContext.Values,
+		IPAddress:      e.IPAddress,
+		TimestampUnix:  timeutil.TimeStamp(e.Time.Unix()),
 	})
 	return err
 }

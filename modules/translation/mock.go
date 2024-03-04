@@ -25,6 +25,10 @@ func (l MockLocale) Tr(s string, a ...any) template.HTML {
 	return template.HTML(s)
 }
 
+func (l MockLocale) TrExpand(s string, a []any) template.HTML {
+	return l.Tr(s, a...)
+}
+
 func (l MockLocale) TrN(cnt any, key1, keyN string, args ...any) template.HTML {
 	return template.HTML(key1)
 }
