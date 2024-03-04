@@ -41,11 +41,14 @@ func TestBuildEvent(t *testing.T) {
 
 	equal(
 		&Event{
-			Action:  audit_model.UserCreate,
-			Actor:   TypeDescriptor{Type: "user", ID: 2, Object: doer},
-			Scope:   TypeDescriptor{Type: "user", ID: 1, Object: u},
-			Target:  TypeDescriptor{Type: "user", ID: 1, Object: u},
-			Message: "Created user TestUser.",
+			Action: audit_model.UserCreate,
+			Actor:  TypeDescriptor{Type: "user", ID: 2, Object: doer},
+			Scope:  TypeDescriptor{Type: "user", ID: 1, Object: u},
+			Target: TypeDescriptor{Type: "user", ID: 1, Object: u},
+			MessageContext: MessageContext{
+				audit_model.UserCreate,
+				[]any{u.Name},
+			},
 		},
 		buildEvent(
 			ctx,
@@ -59,11 +62,14 @@ func TestBuildEvent(t *testing.T) {
 	)
 	equal(
 		&Event{
-			Action:  audit_model.RepositoryMirrorPushAdd,
-			Actor:   TypeDescriptor{Type: "user", ID: 2, Object: doer},
-			Scope:   TypeDescriptor{Type: "repository", ID: 3, Object: r},
-			Target:  TypeDescriptor{Type: "push_mirror", ID: 4, Object: m},
-			Message: "Added push mirror for repository TestUser/TestRepo.",
+			Action: audit_model.RepositoryMirrorPushAdd,
+			Actor:  TypeDescriptor{Type: "user", ID: 2, Object: doer},
+			Scope:  TypeDescriptor{Type: "repository", ID: 3, Object: r},
+			Target: TypeDescriptor{Type: "push_mirror", ID: 4, Object: m},
+			MessageContext: MessageContext{
+				audit_model.RepositoryMirrorPushAdd,
+				[]any{r.FullName()},
+			},
 		},
 		buildEvent(
 			ctx,

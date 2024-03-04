@@ -9,15 +9,21 @@ import (
 	audit_model "code.gitea.io/gitea/models/audit"
 	"code.gitea.io/gitea/modules/json"
 	"code.gitea.io/gitea/modules/setting"
+	"code.gitea.io/gitea/modules/translation"
 	"code.gitea.io/gitea/modules/util/rotatingfilewriter"
 )
 
-var rfw *rotatingfilewriter.RotatingFileWriter
+var (
+	rfw    *rotatingfilewriter.RotatingFileWriter
+	locale translation.Locale
+)
 
 func initAuditFile() error {
 	if setting.Audit.FileOptions == nil {
 		return nil
 	}
+
+	initAuditFileLocale()
 
 	opts := setting.Audit.FileOptions
 
@@ -33,6 +39,10 @@ func initAuditFile() error {
 	return err
 }
 
+func initAuditFileLocale() {
+	locale = translation.NewLocale("en-us")
+}
+
 func writeToFile(e *Event) error {
 	if rfw == nil {
 		return nil
@@ -40,7 +50,7 @@ func writeToFile(e *Event) error {
 	return WriteEventAsJSON(rfw, e)
 }
 
-func (d TypeDescriptor) MarshalJSON() ([]byte, error) {
+func (d *TypeDescriptor) MarshalJSON() ([]byte, error) {
 	type out struct {
 		Type        audit_model.ObjectType `json:"type"`
 		ID          int64                  `json:"id"`
@@ -52,6 +62,10 @@ func (d TypeDescriptor) MarshalJSON() ([]byte, error) {
 		ID:          d.ID,
 		DisplayName: d.DisplayName(),
 	})
+}
+
+func (mc MessageContext) MarshalJSON() ([]byte, error) {
+	return json.Marshal(locale.TrString(mc.Action.LocaleKey(), mc.Values...))
 }
 
 func WriteEventAsJSON(w io.Writer, e *Event) error {

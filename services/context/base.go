@@ -299,6 +299,10 @@ func (b *Base) Tr(msg string, args ...any) template.HTML {
 	return b.Locale.Tr(msg, args...)
 }
 
+func (b *Base) TrExpand(msg string, args []any) template.HTML {
+	return b.Locale.TrExpand(msg, args)
+}
+
 func (b *Base) TrN(cnt any, key1, keyN string, args ...any) template.HTML {
 	return b.Locale.TrN(cnt, key1, keyN, args...)
 }

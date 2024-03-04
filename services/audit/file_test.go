@@ -13,14 +13,23 @@ import (
 	audit_model "code.gitea.io/gitea/models/audit"
 	repository_model "code.gitea.io/gitea/models/repo"
 	user_model "code.gitea.io/gitea/models/user"
+	"code.gitea.io/gitea/modules/setting"
+	"code.gitea.io/gitea/modules/translation"
 	"code.gitea.io/gitea/modules/web/middleware"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestWriteEventAsJSON(t *testing.T) {
+	setting.StaticRootPath = "../../"
+	setting.Names = []string{"english"}
+	setting.Langs = []string{"en-US"}
+	translation.InitLocales(context.Background())
+
+	initAuditFileLocale()
+
 	r := &repository_model.Repository{ID: 3, Name: "TestRepo", OwnerName: "TestUser"}
-	m := &repository_model.PushMirror{ID: 4}
+	m := &repository_model.PushMirror{ID: 4, RemoteAddress: "https://gitea.com/"}
 	doer := &user_model.User{ID: 2, Name: "Doer"}
 
 	ctx := middleware.WithContextRequest(context.Background(), &http.Request{RemoteAddr: "127.0.0.1:1234"})
@@ -32,6 +41,7 @@ func TestWriteEventAsJSON(t *testing.T) {
 		r,
 		m,
 		"Added push mirror for repository %s.",
+		m.RemoteAddress,
 		r.FullName(),
 	)
 	e.Time = time.Time{}
@@ -40,7 +50,7 @@ func TestWriteEventAsJSON(t *testing.T) {
 	assert.NoError(t, WriteEventAsJSON(&sb, e))
 	assert.Equal(
 		t,
-		`{"action":"repository:mirror:push:add","actor":{"type":"user","id":2,"display_name":"Doer"},"scope":{"type":"repository","id":3,"display_name":"TestUser/TestRepo"},"target":{"type":"push_mirror","id":4,"display_name":""},"message":"Added push mirror for repository TestUser/TestRepo.","time":"0001-01-01T00:00:00Z","ip_address":"127.0.0.1"}`+"\n",
+		`{"action":"repository:mirror:push:add","actor":{"type":"user","id":2,"display_name":"Doer"},"scope":{"type":"repository","id":3,"display_name":"TestUser/TestRepo"},"target":{"type":"push_mirror","id":4,"display_name":"https://gitea.com/"},"message":"Added push mirror to https://gitea.com/ for repository TestUser/TestRepo.","time":"0001-01-01T00:00:00Z","ip_address":"127.0.0.1"}`+"\n",
 		sb.String(),
 	)
 }

@@ -36,7 +36,7 @@
 							<span class="text small">{{ctx.Locale.Tr "admin.monitor.audit.deleted.type" .Scope.Type .Scope.ID}}</span>
 						{{end}}
 					</td>
-					<td>{{.Message}}</td>
+					<td>{{ctx.Locale.TrExpand .Action.LocaleKey .MessageContext.Values}}</td>
 					<td>
 						{{if or .Target.Object (eq .Scope.Type "system")}}
 							{{$url := .Target.HTMLURL}}
